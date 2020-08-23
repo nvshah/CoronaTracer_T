@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 
 import 'package:coronatracker/app/services/api.dart';
 
+//Make Requests & Parse Resposne
 class APIService {
   final API api;
 
@@ -12,6 +13,7 @@ class APIService {
 
   //TOKEN
   Future<String> getAccessToken() async {
+    //make request
     final response = await http.post(
       api.tokenUri().toString(),
       headers: {
@@ -19,9 +21,11 @@ class APIService {
       },
     );
 
-    //Successful
+    //successful
     if(response.statusCode == 200){
+      //parse response
       final data = json.decode(response.body);
+      //get info 
       final accessToken = data['access_token'];
       if(accessToken != null){
         return accessToken;
@@ -34,13 +38,16 @@ class APIService {
   }
 
   //PAYLOAD
-  Future<int> getEndpointData(@required String accesstToken, @required Endpoint endPoint) async{
+  Future<int> getEndpointData({@required String accessToken, @required Endpoint endPoint}) async{
     final uri = api.endpointUri(endPoint);
+    //make request
     final response = await http.post(uri.toString(), headers: {
       'Authorization': 'Bearer ${api.apiKey}',
     });
 
+    //successful
     if(response.statusCode == 200){
+      //parse response
       final List<dynamic> data = json.decode(response.body);
       if(data.isNotEmpty){
         final Map<String, dynamic> endPointData = data[0];
@@ -57,7 +64,7 @@ class APIService {
     throw response;
   }
   
-  //Map to get key name for information from payload data
+  //Map(helper) to get 'key name' for information from payload data
   static Map<Endpoint, String> _responseJsonKeysForInfo = {
     Endpoint.cases: 'cases',
     Endpoint.casesConfirmed: 'data',
