@@ -31,8 +31,27 @@ class DataRepository{
       rethrow;
     }
   }
+  
+  Future<EndpointsData> getAllEndpointData(Endpoint endpoint) async {
+    try{
+      //requesting access token for first time
+      if(_accessToken == null){
+        _accessToken = await apiService.getAccessToken();
+      }
+      return await _getAllEndPointData();
+      
+    } on Response catch(response){
+      //if unauthorized, get access token again
+      if(response.statusCode == 401){
+        _accessToken = await apiService.getAccessToken();
+        return await _getAllEndPointData();
+      }
+      //Some other error so give this to caller side
+      rethrow;
+    }
+  }
 
-  Future<EndpointsData> getAllEndPointData() async {
+  Future<EndpointsData> _getAllEndPointData() async {
     // final cases = await apiService.getEndpointData(endPoint: Endpoint.cases, accessToken: _accessToken);
     // final casesSuspected = await apiService.getEndpointData(endPoint: Endpoint.casesSuspected, accessToken: _accessToken);
     // final casesConfirmed = await apiService.getEndpointData(endPoint: Endpoint.casesConfirmed, accessToken: _accessToken);
