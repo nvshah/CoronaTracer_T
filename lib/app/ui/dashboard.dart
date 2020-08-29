@@ -4,7 +4,8 @@ import 'package:provider/provider.dart';
 import '../repositories/data_repository.dart';
 import '../services/api.dart';
 import '../repositories/endpoints_data.dart';
-import '../ui/endpoint_card.dart';
+import './endpoint_card.dart';
+import './last_updated_status.dart';
 
 class Dashboard extends StatefulWidget {
   @override
@@ -40,12 +41,16 @@ class _DashboardState extends State<Dashboard> {
         onRefresh: _updateData,
         child: ListView(
           children: <Widget>[
+            //Last Updated Status(according to server)
+            LastUpdatedStatus(
+              date: _endpointsData?.values[Endpoint.cases].date,
+            ),
             //Collection for loop to add multiple member
-            for(var endpoint in Endpoint.values)
+            for (var endpoint in Endpoint.values)
               EndpointCard(
                 endpoint: endpoint,
-                value: _endpointsData?.values[endpoint],
-              ),            
+                value: _endpointsData?.values[endpoint].numbers,
+              ),
           ],
         ),
       ),
