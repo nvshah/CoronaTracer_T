@@ -3,6 +3,8 @@ import 'package:provider/provider.dart';
 
 import '../repositories/data_repository.dart';
 import '../services/api.dart';
+import '../repositories/endpoints_data.dart';
+import '../ui/endpoint_card.dart';
 
 class Dashboard extends StatefulWidget {
   @override
@@ -10,7 +12,7 @@ class Dashboard extends StatefulWidget {
 }
 
 class _DashboardState extends State<Dashboard> {
-  int _cases;
+  EndpointsData _endpointsData;
 
   @override
   void initState() {
@@ -21,10 +23,10 @@ class _DashboardState extends State<Dashboard> {
   //Get latest data
   Future<void> _updateData() async {
     final dataRepo = Provider.of<DataRepository>(context, listen: false);
-    final cases = await dataRepo.getEndpointData(Endpoint.cases);
+    final cases = await dataRepo.getAllEndpointData();
 
     setState(() {
-      _cases = cases;
+      _endpointsData = cases;
     });
   }
 
@@ -37,7 +39,14 @@ class _DashboardState extends State<Dashboard> {
       body: RefreshIndicator(
         onRefresh: _updateData,
         child: ListView(
-          children: <Widget>[],
+          children: <Widget>[
+            //Collection for loop to add multiple member
+            for(var endpoint in Endpoint.values)
+              EndpointCard(
+                endpoint: endpoint,
+                value: _endpointsData?.values[endpoint],
+              ),            
+          ],
         ),
       ),
     );
