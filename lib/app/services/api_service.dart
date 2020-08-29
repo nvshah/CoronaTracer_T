@@ -40,13 +40,19 @@ class APIService {
   }
 
   //PAYLOAD
-  Future<EndpointData> getEndpointData(
-      {@required String accessToken, @required Endpoint endPoint}) async {
+  Future<EndpointData> getEndpointData({
+    @required String accessToken,
+    @required Endpoint endPoint,
+  }) async {
     final uri = api.endpointUri(endPoint);
+    print(uri);
     //make request
-    final response = await http.post(uri.toString(), headers: {
-      'Authorization': 'Bearer ${api.apiKey}',
-    });
+    final response = await http.get(
+      uri.toString(),
+      headers: {
+        'Authorization': 'Bearer $accessToken',
+      },
+    );
 
     //successful
     if (response.statusCode == 200) {
@@ -57,6 +63,7 @@ class APIService {
         final String responseJsonInfoKey = _responseJsonKeysForInfo[endPoint];
         final int numbers = endPointData[responseJsonInfoKey];
         final date = DateTime.tryParse(endPointData['date']);
+        
         if (numbers != null) {
           return EndpointData(
             numbers: numbers,

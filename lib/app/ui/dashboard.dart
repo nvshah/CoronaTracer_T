@@ -43,13 +43,16 @@ class _DashboardState extends State<Dashboard> {
           children: <Widget>[
             //Last Updated Status(according to server)
             LastUpdatedStatus(
-              date: _endpointsData?.values[Endpoint.cases].date,
+              date: _endpointsData?.cases?.date,
             ),
             //Collection for loop to add multiple member
             for (var endpoint in Endpoint.values)
               EndpointCard(
                 endpoint: endpoint,
-                value: _endpointsData?.values[endpoint].numbers,
+                //value: _endpointsData?.values[endpoint]?.numbers,
+                value: _endpointsData != null
+                    ? _endpointsData.values[endpoint]?.numbers
+                    : null,
               ),
           ],
         ),

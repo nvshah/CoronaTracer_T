@@ -24,10 +24,10 @@ class EndpointCard extends StatelessWidget {
     this.endpoint,
     this.value,
   });
-  
+
   ///Format Number by adding comma to seperate thousand gaps
-  String get _formattedNumber{
-    if(value == null){
+  String get _formattedNumber {
+    if (value == null) {
       return '';
     }
     final formatter = NumberFormat('#,###,###,###');
@@ -45,22 +45,22 @@ class EndpointCard extends StatelessWidget {
     ),
     Endpoint.casesConfirmed: _EndpointCardData(
       title: 'Confirmed Cases',
-      color: Color(0xFFE99600),
+      color: Color(0xFFFFB74D),
       image: 'assets/fever.png',
     ),
     Endpoint.casesSuspected: _EndpointCardData(
       title: 'Suspected Cases',
-      color: Color(0xFFEEDA28),
+      color: Color(0xFFA5D6A7),
       image: 'assets/suspect.png',
     ),
     Endpoint.deaths: _EndpointCardData(
       title: 'Deaths',
-      color: Color(0xFFE40000),
+      color: Color(0xFFE57373),
       image: 'assets/death.png',
     ),
     Endpoint.recovered: _EndpointCardData(
       title: 'Recovered',
-      color: Color(0xFF70A901),
+      color: Color(0xFFAED581),
       image: 'assets/patient.png',
     ),
   };
@@ -75,12 +75,12 @@ class EndpointCard extends StatelessWidget {
         horizontal: 8.0,
         vertical: 4.0,
       ),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(
-          horizontal: 16.0,
-          vertical: 8.0,
-        ),
-        child: Card(
+      child: Card(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: 16.0,
+            vertical: 8.0,
+          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[

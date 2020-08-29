@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
     return Provider<DataRepository>(
       create: (_) => DataRepository(
         apiService: APIService(
-          API(apiKey: APIKeys.ncovSandBoxKey),
+          API.sandbox(),
         ),
       ),
       child: MaterialApp(

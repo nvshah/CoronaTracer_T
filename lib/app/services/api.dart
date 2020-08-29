@@ -37,7 +37,7 @@ class API {
   static Map<Endpoint, String> _paths = {
     Endpoint.cases: 'cases',
     Endpoint.casesConfirmed: 'casesConfirmed',
-    Endpoint.casesSuspected: 'caseSuspected',
+    Endpoint.casesSuspected: 'casesSuspected',
     Endpoint.deaths: 'deaths',
     Endpoint.recovered: 'recovered',
   };

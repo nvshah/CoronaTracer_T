@@ -4,7 +4,7 @@ import 'package:intl/intl.dart';
 class LastUpdatedStatus extends StatelessWidget {
   final DateTime date;
 
-  LastUpdatedStatus({@required this.date});
+  LastUpdatedStatus({Key key, @required this.date}) : super(key: key);
   
   ///Format the date using intl package
   ///i/p -> DateTime obj
@@ -20,9 +20,12 @@ class LastUpdatedStatus extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text(
-      date != null ? 'Last Updated: $_dateFormatter(date)' : '',
-      textAlign: TextAlign.center,
+    return Padding(
+        padding: EdgeInsets.all(8.0),
+          child: Text(
+        date != null ? 'Last Updated: ${_dateFormatter(date)}' : '',
+        textAlign: TextAlign.center,
+      ),
     );
   }
 }
