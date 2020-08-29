@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -6,6 +8,7 @@ import '../services/api.dart';
 import '../repositories/endpoints_data.dart';
 import './endpoint_card.dart';
 import './last_updated_status.dart';
+import './show_alert_dialog.dart';
 
 class Dashboard extends StatefulWidget {
   @override
@@ -23,12 +26,23 @@ class _DashboardState extends State<Dashboard> {
 
   //Get latest data
   Future<void> _updateData() async {
-    final dataRepo = Provider.of<DataRepository>(context, listen: false);
-    final cases = await dataRepo.getAllEndpointData();
+    try {
+      final dataRepo = Provider.of<DataRepository>(context, listen: false);
+      final cases = await dataRepo.getAllEndpointData();
 
-    setState(() {
-      _endpointsData = cases;
-    });
+      setState(() {
+        _endpointsData = cases;
+      });
+    } on SocketException catch (_) {
+      //await showAlertDialog   // --> Since we are not doing anythin after this so we can skip using await
+      showAlertDialog(
+        context: context,
+        title: 'Connection Error !',
+        content:
+            'Could not fetch the data. Please check data connection & try again later.',
+        defaultActionText: 'OK',
+      );
+    }
   }
 
   @override
