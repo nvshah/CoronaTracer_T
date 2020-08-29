@@ -42,6 +42,15 @@ class _DashboardState extends State<Dashboard> {
             'Could not fetch the data. Please check data connection & try again later.',
         defaultActionText: 'OK',
       );
+    } catch (_){
+       //Incase we get 4xx or 5xx from server | parsing error
+       showAlertDialog(
+        context: context,
+        title: 'Unknown Error !',
+        content:
+            'Please contact support or try in a while.',
+        defaultActionText: 'OK',
+      );
     }
   }
 
