@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 
-import 'package:coronatracker/app/services/api.dart';
+import '../services/api.dart';
+import './endpoint_data.dart';
 
 class EndpointsData{
   // final int cases;
@@ -9,7 +10,7 @@ class EndpointsData{
   // final int deaths;
   // final int recovered;
 
-  final Map<Endpoint, int> values;
+  final Map<Endpoint, EndpointData> values;
 
   EndpointsData({@required this.values});
 
@@ -19,9 +20,9 @@ class EndpointsData{
    }
 
   //GETTERS
-  int get cases => values[Endpoint.cases];
-  int get casesConfirmed => values[Endpoint.casesConfirmed];
-  int get casesSuspected => values[Endpoint.casesSuspected];
-  int get deaths => values[Endpoint.deaths];
-  int get recovered => values[Endpoint.recovered];   
+  EndpointData get cases => values[Endpoint.cases];
+  EndpointData get casesConfirmed => values[Endpoint.casesConfirmed];
+  EndpointData get casesSuspected => values[Endpoint.casesSuspected];
+  EndpointData get deaths => values[Endpoint.deaths];
+  EndpointData get recovered => values[Endpoint.recovered];   
 }

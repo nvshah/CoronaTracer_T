@@ -4,6 +4,7 @@ import 'package:http/http.dart';
 import '../services/api_service.dart';
 import '../services/api.dart';
 import '../repositories/endpoints_data.dart';
+import './endpoint_data.dart';
 
 //Keep track of updated access-token & give behaviours to call endpoints from UI
 //Interface between Api Service & UI
@@ -12,7 +13,9 @@ class DataRepository {
   String _accessToken;
 
   DataRepository({@required this.apiService});
-  
+
+  /// general methods that make initial setup to enure access token & proceed ahead to make api requests
+  /// i/p -> handler for api service call ( interact with apiservice )
   //Generics + Function arg, makes code reusable
   // Future<T> _getDataRefreshingToken<T>({Future<T> Function() getDataHandler}) async {
   Future<T> _getDataRefreshingToken<T>({Function getDataHandler}) async {
@@ -33,14 +36,19 @@ class DataRepository {
     }
   }
 
-  Future<int> getEndpointData(Endpoint endpoint) async =>
-      await _getDataRefreshingToken<int>(
+  /// get the endpoint data for given endpoint
+  /// i/p -> endpoint,
+  /// o/p -> endpoint_data
+  Future<EndpointData> getEndpointData(Endpoint endpoint) async =>
+      await _getDataRefreshingToken<EndpointData>(
         getDataHandler: () => apiService.getEndpointData(
           endPoint: endpoint,
           accessToken: _accessToken,
         ),
       );
 
+  /// get the endpoint data for all the endpoints at once
+  /// o/p ->  endpoint data mapping
   Future<EndpointsData> getAllEndpointData() async =>
       await _getDataRefreshingToken<EndpointsData>(
         getDataHandler: _getAllEndPointData,
@@ -54,7 +62,7 @@ class DataRepository {
     // final recoverd = await apiService.getEndpointData(endPoint: Endpoint.recovered, accessToken: _accessToken);
 
     //All requests are independent of each other & will get exceuted concurrently. Once all request gets completed It will return result
-    final values = await Future.wait([
+    final endPointData = await Future.wait([
       apiService.getEndpointData(
           endPoint: Endpoint.cases, accessToken: _accessToken),
       apiService.getEndpointData(
@@ -68,12 +76,14 @@ class DataRepository {
     ]);
 
     //create data model object to store those values so that we can use it further to show on dashboard screen
-    return EndpointsData(values: {
-      Endpoint.cases: values[0],
-      Endpoint.casesSuspected: values[1],
-      Endpoint.casesConfirmed: values[2],
-      Endpoint.deaths: values[3],
-      Endpoint.recovered: values[4],
-    });
+    return EndpointsData(
+      values: {
+        Endpoint.cases: endPointData[0],
+        Endpoint.casesSuspected: endPointData[1],
+        Endpoint.casesConfirmed: endPointData[2],
+        Endpoint.deaths: endPointData[3],
+        Endpoint.recovered: endPointData[4],
+      },
+    );
   }
 }
