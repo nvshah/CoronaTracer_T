@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import '../services/api.dart';
 
@@ -23,6 +24,15 @@ class EndpointCard extends StatelessWidget {
     this.endpoint,
     this.value,
   });
+  
+  ///Format Number by adding comma to seperate thousand gaps
+  String get _formattedNumber{
+    if(value == null){
+      return '';
+    }
+    final formatter = NumberFormat('#,###,###,###');
+    return formatter.format(value);
+  }
 
   //Here we make this mapping static because Constructor of this class is const
   //Hold the details about endpoint to be displayed such as title, color, image
@@ -100,7 +110,7 @@ class EndpointCard extends StatelessWidget {
                     ),
                     //Numbers
                     Text(
-                      value != null ? value.toString() : '',
+                      _formattedNumber,
                       style: Theme.of(context).textTheme.display1.copyWith(
                             color: cardData.color,
                             fontWeight: FontWeight.w300,
