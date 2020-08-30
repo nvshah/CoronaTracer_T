@@ -18,6 +18,8 @@ class Dashboard extends StatefulWidget {
 class _DashboardState extends State<Dashboard> {
   EndpointsData _endpointsData;
 
+  // Not sure if context is available under initState(), so for an alternative 
+  // we can get DataRepo instance inside didChangeDependencies()
   @override
   void initState() {
     super.initState();
@@ -27,7 +29,7 @@ class _DashboardState extends State<Dashboard> {
     //OFFLINE mode
     _endpointsData = dataRepo.getAllEndPointCachedData();
     _updateData();
-  }
+  }  
 
   //Get latest data from server
   Future<void> _updateData() async {

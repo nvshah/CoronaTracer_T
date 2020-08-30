@@ -6,16 +6,16 @@ import 'package:flutter/cupertino.dart';
 ///Display simple Alert Dialog
 Future<void> showAlertDialog({
   @required BuildContext context,
-  @required final title,
-  @required final content,
-  @required final defaultActionText,
+  @required String title,
+  @required String content,
+  @required String defaultActionText,
 }) async {
   if (Platform.isIOS) {
     return await showCupertinoDialog(
       context: context,
       builder: (context) => CupertinoAlertDialog(
-        title: title,
-        content: content,
+        title: Text(title),
+        content: Text(content),
         actions: <Widget>[
           CupertinoDialogAction(
             child: Text(defaultActionText),
@@ -28,8 +28,8 @@ Future<void> showAlertDialog({
   return await showDialog(
     context: context,
     builder: (context) => AlertDialog(
-      title: title,
-      content: content,
+      title: Text(title),
+      content: Text(content),
       actions: <Widget>[
         FlatButton(
           child: Text(defaultActionText),

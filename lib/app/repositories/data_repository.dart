@@ -68,6 +68,7 @@ class DataRepository {
   }
   
   ///get cached data (for offline mode)
+  ///For First time it will return empty map, since we haven't cached any endpoint data before
   EndpointsData getAllEndPointCachedData() => dataCacheService.getData();
 
   Future<EndpointsData> _getAllEndPointData() async {

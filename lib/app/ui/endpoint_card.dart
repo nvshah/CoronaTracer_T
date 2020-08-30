@@ -28,7 +28,7 @@ class EndpointCard extends StatelessWidget {
   ///Format Number by adding comma to seperate thousand gaps
   String get _formattedNumber {
     if (value == null) {
-      return '';
+      return '-';
     }
     final formatter = NumberFormat('#,###,###,###');
     return formatter.format(value);
