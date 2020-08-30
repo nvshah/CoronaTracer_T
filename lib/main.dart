@@ -11,6 +11,8 @@ import './app/ui/dashboard.dart';
 import './app/services/data_cache_service.dart';
 
 void main() async {
+  // to avoid binary messenger error ServiceBinding.DefaultBinaryMessenger eexception
+  WidgetsFlutterBinding.ensureInitialized();
   //by default US locale is used
   Intl.defaultLocale = 'en_IN';
   await initializeDateFormatting();
