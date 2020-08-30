@@ -5,14 +5,20 @@ import '../services/api_service.dart';
 import '../services/api.dart';
 import '../repositories/endpoints_data.dart';
 import './endpoint_data.dart';
+import '../services/data_cache_service.dart';
 
 //Keep track of updated access-token & give behaviours to call endpoints from UI
 //Interface between Api Service & UI
 class DataRepository {
   final APIService apiService;
+  final DataCacheService dataCacheService;
+  
   String _accessToken;
 
-  DataRepository({@required this.apiService});
+  DataRepository({
+    @required this.apiService,
+    @required this.dataCacheService,
+  });
 
   /// general methods that make initial setup to enure access token & proceed ahead to make api requests
   /// i/p -> handler for api service call ( interact with apiservice )
@@ -49,10 +55,20 @@ class DataRepository {
 
   /// get the endpoint data for all the endpoints at once
   /// o/p ->  endpoint data mapping
-  Future<EndpointsData> getAllEndpointData() async =>
-      await _getDataRefreshingToken<EndpointsData>(
+  Future<EndpointsData> getAllEndpointData() async {
+      final endpointsData = await _getDataRefreshingToken<EndpointsData>(
         getDataHandler: _getAllEndPointData,
       );
+
+      //save data to cache
+      // once we have data from remote, we do update our cache apparently
+      await dataCacheService.saveData(endpointsData);
+
+      return endpointsData;
+  }
+  
+  ///get cached data (for offline mode)
+  EndpointsData getAllEndPointCachedData() => dataCacheService.getData();
 
   Future<EndpointsData> _getAllEndPointData() async {
     // final cases = await apiService.getEndpointData(endPoint: Endpoint.cases, accessToken: _accessToken);

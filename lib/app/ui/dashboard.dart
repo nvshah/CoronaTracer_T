@@ -21,10 +21,15 @@ class _DashboardState extends State<Dashboard> {
   @override
   void initState() {
     super.initState();
+    // get the data from cache prior to fetching data from server
+    // so we will see data 2 times in our screen when we open app i.e 1st from cache & 2nd data updated from server
+    final dataRepo = Provider.of<DataRepository>(context, listen: false);
+    //OFFLINE mode
+    _endpointsData = dataRepo.getAllEndPointCachedData();
     _updateData();
   }
 
-  //Get latest data
+  //Get latest data from server
   Future<void> _updateData() async {
     try {
       final dataRepo = Provider.of<DataRepository>(context, listen: false);
